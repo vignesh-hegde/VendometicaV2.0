@@ -1,4 +1,4 @@
-#include <WaterHeater.hpp>
+#include <WaterHeater.h>
 
 cWaterHeater *cWaterHeater::smpInstance = NullPtr;
 

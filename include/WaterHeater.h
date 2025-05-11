@@ -1,7 +1,7 @@
 #ifndef WaterHeater_H
 #define WaterHeater_H
 #define MAX_ALLOWED_HEATING_PERIOD (1000000 * MAX_ALLOWED_HEATING_PERIOD_SEC)
-#include <VendometicaConfig.hpp>
+#include <VendometicaConfig.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 

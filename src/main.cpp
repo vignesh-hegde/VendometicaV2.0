@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <WaterHeater.hpp>
+#include <WaterHeater.h>
 
 void setup() {
   cWaterHeater *W1 = new cWaterHeater();
