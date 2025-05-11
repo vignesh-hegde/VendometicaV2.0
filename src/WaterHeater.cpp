@@ -2,7 +2,7 @@
 
 cWaterHeater *cWaterHeater::smpInstance = NullPtr;
 
-cWaterHeater::cWaterHeater() : mMaxHeatingTemperature(0), mIdleTemperature(0), mpHeaterTimer(NullPtr), mIsHeaterEnabled(true)
+cWaterHeater::cWaterHeater() : mMaxHeatingTemperature(0), mIdleTemperature(0), mpHeaterTimer(NullPtr), mIsHeaterEnabled(true), mHeaterTimerMux(portMUX_INITIALIZER_UNLOCKED)
 {
     mpOneWire = new cOneWire(TEMPERATURE_SENSOR);
     mpTemperatureSensors = new cDallasTemperature(mpOneWire);
@@ -20,6 +20,7 @@ cWaterHeater::~cWaterHeater()
 
 void IRAM_ATTR cWaterHeater::SetAlarmCallback()
 {
+
     if(cWaterHeater::smpInstance != NULL)
     {
         cWaterHeater::smpInstance->SetAlarm();
@@ -28,9 +29,11 @@ void IRAM_ATTR cWaterHeater::SetAlarmCallback()
 
 void IRAM_ATTR cWaterHeater::SetAlarm()
 {
+    portENTER_CRITICAL_ISR(&mHeaterTimerMux);
     // Stop power supply to heating Coil
     DisableHeater();
-    // IEC104 Send ERROR TO SERVER
+    // Add IEC104 Error List 
+    portEXIT_CRITICAL_ISR(&mHeaterTimerMux);
 }
 
 UInt32 cWaterHeater::GetWaterTemperatureC(void)

@@ -5,6 +5,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
+
 typedef OneWire cOneWire;
 typedef DallasTemperature cDallasTemperature;
 
@@ -13,6 +14,7 @@ class cWaterHeater
 private:
 
     hw_timer_t *mpHeaterTimer; 
+    portMUX_TYPE mHeaterTimerMux; 
     Float32 mIdleTemperature;
     Float32 mMaxHeatingTemperature;
     bool mIsHeaterEnabled;
@@ -23,7 +25,7 @@ private:
     void SetAlarm();
     static void IRAM_ATTR SetAlarmCallback(); 
     static cWaterHeater *smpInstance;
-
+    
 public:
     cWaterHeater();
     ~cWaterHeater();
