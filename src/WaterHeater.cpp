@@ -1,8 +1,9 @@
-#include "WaterHeater.hpp"
+#include <WaterHeater.hpp>
+
+cWaterHeater *cWaterHeater::smpInstance = NullPtr;
 
 cWaterHeater::cWaterHeater() : mMaxHeatingTemperature(0), mIdleTemperature(0), mpHeaterTimer(NullPtr), mIsHeaterEnabled(true)
 {
-    smpInstance = NullPtr;
     mpOneWire = new cOneWire(TEMPERATURE_SENSOR);
     mpTemperatureSensors = new cDallasTemperature(mpOneWire);
     pinMode(HEATER_COIL, OUTPUT);
@@ -11,17 +12,17 @@ cWaterHeater::cWaterHeater() : mMaxHeatingTemperature(0), mIdleTemperature(0), m
 
 cWaterHeater::~cWaterHeater()
 {
-        delete mpOneWire;
-        delete mpTemperatureSensors;
-        mpOneWire = NullPtr;
-        mpTemperatureSensors = NullPtr;
+    delete mpOneWire;
+    delete mpTemperatureSensors;
+    mpOneWire = NullPtr;
+    mpTemperatureSensors = NullPtr;
 }
 
 void IRAM_ATTR cWaterHeater::SetAlarmCallback()
 {
-    if(smpInstance != NULL)
+    if(cWaterHeater::smpInstance != NULL)
     {
-        smpInstance->SetAlarm();
+        cWaterHeater::smpInstance->SetAlarm();
     }
 }
 
